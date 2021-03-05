@@ -35,13 +35,13 @@ services:
      ports:
       - "3306:3306"
      volumes:
-       - ./docker/mysql/data:/var/lib/mysql
+      - './docker/mysql/data:/var/lib/mysql'
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
        MYSQL_DATABASE: ${DB_DATABASE}
        MYSQL_USER: ${DB_USERNAME}
-       MYSQL_PASSWORD: ${DB_PASSWORD}  
+       MYSQL_PASSWORD: ${DB_PASSWORD}
       
      networks:
       - backend   
