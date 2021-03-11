@@ -17,7 +17,6 @@ class CreateUsersTypeAccount extends Migration
             $table->increments('id', true);
             $table->string('name');
             $table->string('alias');
-            $table->timestamps();
         });
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UsersNaturalPearson extends Seeder
+class UsersNaturalPearsonSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class UsersNaturalPearson extends Seeder
      */
     public function run()
     {
-        DB::table('users_natural_pearson')->insert([
+        DB::table('users_natural_person')->insert([
             'user_id' => 1,
             'cpf' => '11111111111'
         ]);

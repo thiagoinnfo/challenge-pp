@@ -12,16 +12,20 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'John David',
-            'email' => 'johndavid@example.com',
-            'user_type_account_id' => 1
-        ]);
+        $users = [
+            [
+                'name' => 'John David',
+                'email' => 'johndavid@example.com',
+                'user_type_account_id' => 1
+            ],
+            
+            [
+                'name' => 'James Robert',
+                'email' => 'jamesrobert@example.com',
+                'user_type_account_id' => 2
+            ]
+        ];
 
-        DB::table('users')->insert([
-            'name' => 'James Robert',
-            'email' => 'jamesrobert@example.com',
-            'user_type_account_id' => 2
-        ]);
+        DB::table('users')->insert($users);
     }
 }
