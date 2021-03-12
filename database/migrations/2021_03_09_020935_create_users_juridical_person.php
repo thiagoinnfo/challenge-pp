@@ -18,7 +18,7 @@ class CreateUsersJuridicalPerson extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('company_name');
             $table->string('trading_name');
-            $table->string('cnpj', 18);
+            $table->string('cnpj', 18)->unique();
             $table->timestamps();
         });
 

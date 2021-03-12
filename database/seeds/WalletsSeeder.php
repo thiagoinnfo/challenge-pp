@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class WalletsSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the WalletsSeeder seeds.
      *
      * @return void
      */

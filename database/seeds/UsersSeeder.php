@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class UsersSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the UsersSeeder seeds.
      *
      * @return void
      */
@@ -16,13 +16,15 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'John David',
                 'email' => 'johndavid@example.com',
-                'user_type_account_id' => 1
+                'user_type_account_id' => 1,
+                'status' => 1
             ],
-            
+
             [
                 'name' => 'James Robert',
                 'email' => 'jamesrobert@example.com',
-                'user_type_account_id' => 2
+                'user_type_account_id' => 2,
+                'status' => 1
             ]
         ];
 

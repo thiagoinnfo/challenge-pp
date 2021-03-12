@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class UsersNaturalPearsonSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the UsersNaturalPearsonSeeder seeds.
      *
      * @return void
      */

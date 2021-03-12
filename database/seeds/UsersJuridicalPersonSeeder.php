@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class UsersJuridicalPersonSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the UsersJuridicalPersonSeeder seeds.
      *
      * @return void
      */

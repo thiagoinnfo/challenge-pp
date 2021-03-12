@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class UsersTypeAccountSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the UsersTypeAccountSeeder seeds.
      *
      * @return void
      */

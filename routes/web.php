@@ -11,7 +11,15 @@
 |
 */
 
+/**
+ * Home
+ */
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+/**
+ * Payment
+ */
+$router->post('/transaction', 'TransactionController@index');
 

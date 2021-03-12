@@ -16,7 +16,7 @@ class CreateUsersNaturalPerson extends Migration
         Schema::create('users_natural_person', function (Blueprint $table) {
             $table->increments('id', true);
             $table->integer('user_id')->unsigned();
-            $table->string('cpf', 14);
+            $table->string('cpf', 14)->unique();
             $table->timestamps();
         });
 
