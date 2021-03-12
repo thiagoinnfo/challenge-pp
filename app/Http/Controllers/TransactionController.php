@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\TransactionRequest;
 
 class TransactionController extends Controller
 {
@@ -16,8 +16,8 @@ class TransactionController extends Controller
         //
     }
 
-    public function index(Request $request)
+    public function index(TransactionRequest $request)
     {
-        return response()->json($request);
+        return response()->json($request->getParams());
     }
 }
