@@ -17,6 +17,7 @@ class CreateUsers extends Migration
             $table->increments('id', true);
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('password', 255);
             $table->integer('user_type_account_id')->unsigned();
             $table->integer('status');
             $table->timestamps();

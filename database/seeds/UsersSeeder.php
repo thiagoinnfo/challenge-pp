@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'John David',
                 'email' => 'johndavid@example.com',
+                'password' => Hash::make('123mudar'),
                 'user_type_account_id' => 1,
                 'status' => 1
             ],
@@ -23,6 +25,7 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'James Robert',
                 'email' => 'jamesrobert@example.com',
+                'password' => Hash::make('123mudar'),
                 'user_type_account_id' => 2,
                 'status' => 1
             ]

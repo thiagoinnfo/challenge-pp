@@ -21,5 +21,5 @@ $router->get('/', function () use ($router) {
 /**
  * Payment
  */
-$router->post('/transaction', 'TransactionController@index');
+$router->post('/transaction', 'TransactionController@transfer');
 

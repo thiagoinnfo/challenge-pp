@@ -3,21 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
+use App\Services\TransactionService;
+use http\Client\Response;
+use Illuminate\Http\Request;
+use Exception;
+
 
 class TransactionController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Transaction service
      */
-    public function __construct()
+    private $transactionService;
+
+    /**
+     * Método construtor
+     */
+    public function __construct(TransactionService $transactionService)
     {
-        //
+        $this->transactionService = $transactionService;
     }
 
-    public function index(TransactionRequest $request)
+    /**
+     * Method transfer
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function transfer(Request $request)
     {
-        return response()->json($request->getParams());
+        $data = $request->all();
+
+        $response = ['status' => 200];
+               
+        try{
+            $response['data'] = $this->transactionService->transfer($data);
+        }catch(Exception $ex){
+          $response = [
+              'status' => 401,
+              'error'  => $ex->getMessage()
+          ];
+        }
+        
+        return response()->json($response, $response['status']); 
     }
 }
