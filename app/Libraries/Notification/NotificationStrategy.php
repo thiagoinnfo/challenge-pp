@@ -23,8 +23,8 @@ class NotificationStrategy
     /**
      * Execute
      */
-    public function execute()
+    public function execute():array
     {
-        $this->strategy->execute();
+       return $this->strategy->execute();
     }
 }

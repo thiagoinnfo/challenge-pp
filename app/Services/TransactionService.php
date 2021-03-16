@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\TransactionRepository;
-use App\Repositories\UserRepository;
 use App\Repositories\WalletRepository;
 use App\Libraries\Authorization\AuthorizationStrategy;
 use App\Libraries\Authorization\MockyAuthorization;
@@ -16,6 +15,7 @@ use Exception;
 
 /**
  * Class TransactionService
+ * @package App\Services
  */
 class TransactionService{
 
@@ -58,12 +58,28 @@ class TransactionService{
             $this->authorization();
             $this->transaction($data);
             $this->debit($data['payer'], $data['value']);
-            $this->credit($data['payer'], $data['value']);
+            $this->credit($data['payee'], $data['value']);
 
             DB::commit();
+
+            $this->notification();
+
         }catch(Exception $ex){
             DB::rollBack();
             throw new Exception($ex->getMessage());
+        }
+    }
+
+    /**
+     * Enviar notificação para o cliente
+     */
+    public function notification()
+    {
+        $notification = new NotificationStrategy(new MockyNotification);
+        $notify = $notification->execute();
+
+        if(!$notify || (!isset($notify['message']) || $notify['message'] != 'Autorizado')){
+            //salvar na tabela de reprocessamento
         }
     }
 

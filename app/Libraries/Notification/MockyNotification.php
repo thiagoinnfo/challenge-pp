@@ -2,15 +2,21 @@
 
 namespace App\Libraries\Notification;
 
+use Illuminate\Support\Facades\Http;
+
 /**
  * Class MockyNotification
  * @package App\Libraries\Notification
  */
 class MockyNotification implements Notification
 {
-
-    public function execute()
+    /**
+     * Metodo execute
+     * @return array
+     */
+    public function execute():array
     {
-      //implementar notificacao.
+        $res = Http::get(config('services.notification.url'));
+        return json_decode($res->body(), true);
     }
 }

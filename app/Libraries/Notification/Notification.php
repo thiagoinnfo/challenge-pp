@@ -13,5 +13,5 @@ interface Notification
      * Method execute
      * @return bool
      */
-    public function execute();
+    public function execute():array;
 }
