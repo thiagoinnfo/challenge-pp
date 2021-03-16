@@ -37,12 +37,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
-
-    /**
-     * Get the wallet associated with the user.
-     */
-    public function wallet()
-    {
-        return $this->hasOne(Wallet::class, 'user_id');
-    }
 }

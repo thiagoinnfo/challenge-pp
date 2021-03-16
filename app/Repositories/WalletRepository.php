@@ -37,7 +37,7 @@ class WalletRepository
     {
         return $this->wallet
             ->where('user_id', $id)
-            ->get();
+            ->first();
     }
 
     /**
@@ -51,7 +51,7 @@ class WalletRepository
     {
         $wallet = $this->wallet
             ->where('user_id', $id)
-            ->get();
+            ->first();
 
         $wallet->amount = $wallet->amount - $value;
 
@@ -69,7 +69,7 @@ class WalletRepository
     {
         $wallet = $this->wallet
             ->where('user_id', $id)
-            ->get();
+            ->first();
 
         $wallet->amount = $wallet->amount + $value;
         

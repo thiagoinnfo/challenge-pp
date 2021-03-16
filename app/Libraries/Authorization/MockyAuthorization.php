@@ -17,9 +17,9 @@ class MockyAuthorization implements Authorization
      * @return bool|void
      * @throws Exception
      */
-    public function execute()
+    public function execute():array
     {
         $res = Http::get(config('services.authorizer.url'));
-        return $res->body();
+        return json_decode($res->body(), true);
     }
 }

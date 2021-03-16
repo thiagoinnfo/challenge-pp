@@ -19,15 +19,7 @@ class Wallet extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'user_id', 'amount'
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
 }

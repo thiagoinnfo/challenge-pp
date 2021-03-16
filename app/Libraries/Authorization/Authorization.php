@@ -10,8 +10,8 @@ namespace App\Libraries\Authorization;
 interface Authorization
 {
     /**
-     * Method execute
-     * @return bool
+     * Metodo execute
+     * @return array
      */
-    public function execute();
+    public function execute():array;
 }

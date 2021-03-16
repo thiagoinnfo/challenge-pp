@@ -162,7 +162,11 @@ class TransactionService{
         $authorize = $authorization->execute();
 
         if(!$authorize){
-            throw new Exception("Serviço não autorizado.");
+            throw new Exception("Serviço de autorização está inoperante.");
+        }
+
+        if(!isset($authorize['message']) || $authorize['message'] != 'Autorizado'){
+            throw new Exception("Operação não permitida pelo serviço autorizador.");
         }
     }
 }

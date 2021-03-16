@@ -25,6 +25,6 @@ class AuthorizationStrategy
      */
     public function execute()
     {
-        $this->strategy->execute();
+        return $this->strategy->execute();
     }
 }
