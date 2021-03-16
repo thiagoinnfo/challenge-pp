@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
+use App\Models\Transaction;
 use App\Services\TransactionService;
 use http\Client\Response;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class TransactionController extends Controller
         $response = ['status' => 200];
                
         try{
-            $response['data'] = $this->transactionService->transfer($data);
+            $this->transactionService->transfer($data);
         }catch(Exception $ex){
           $response = [
               'status' => 401,

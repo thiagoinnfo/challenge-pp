@@ -26,11 +26,6 @@ class TransactionService{
     private $transactionRepository;
 
     /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
-    /**
      * @var WalletRepository
      */
     private $walletRepository;
@@ -38,62 +33,136 @@ class TransactionService{
     /**
      * TransactionService constructor.
      * @param TransactionRepository $transactionRepository
-     * @param UserRepository $userRepository
      * @param WalletRepository $walletRepository
      */
     public function __construct(TransactionRepository $transactionRepository,
-    UserRepository $userRepository, WalletRepository $walletRepository)
+        WalletRepository $walletRepository)
     {
         $this->transactionRepository = $transactionRepository;
-        $this->userRepository = $userRepository;
         $this->walletRepository = $walletRepository;
     }
 
     /**
-     * Method Transfer
+     * Transfere valores entre contas
      * @param array $data
-     * @return array
      * @throws Exception
      */
-    public function transfer(array $data): array
+    public function transfer(array $data): void
     {
         DB::beginTransaction();
 
         try{
-            /**
 
-            $authorizationStrategy = new AuthorizationStrategy(new MockyAuthorization());
-            $authorization = $authorizationStrategy->execute();
-
-            if(!$authorization){
-                throw new Exception("Serviço autorizador não disponível.");
-            }
-
-            $walletPayer = $this->walletRepository->getWalletByUserId($data['payer']);
-
-            if($walletPayer->amount < $data['value']){
-                throw new Exception("O saldo do pagador é insuficiente.");   
-            }
-
-            $transaction = $this->transactionRepository->save($data);
-
-            $walletDebit = $this->walletRepository->debit($data['payer'], $data['value']);
-            $walletCredit = $this->walletRepository->credit($data['payee'], $data['value']);
-
-            $notificationStrategy = new NotificationStrategy(new MockyNotification);
-            $notificationStrategy->execute();
+            $this->validatorTransaction($data);
+            $this->checkAccountBalance($data['payer'], $data['value']);
+            $this->authorization();
+            $this->transaction($data);
+            $this->debit($data['payer'], $data['value']);
+            $this->credit($data['payer'], $data['value']);
 
             DB::commit();
-            **/
         }catch(Exception $ex){
             DB::rollBack();
-            throw new InvalidArgumentException($ex->getMessage());
+            throw new Exception($ex->getMessage());
         }
-
-        $result['data'] = [];
-
-        return $result;
-
     }
 
+    /**
+     * Validar input transação
+     * @param array $data
+     */
+    public function validatorTransaction(array $data)
+    {
+
+        $validator = Validator::make($data, [
+            'value' => 'required|numeric|min:0|not_in:0',
+            'payer' => 'required|integer|exists:users,id,status,1',
+            'payee' => 'required|integer|exists:users,id,status,1'
+        ], [
+            'value.required' => 'O atributo value é obrigatório',
+            'value.numeric'  => 'O atributo value é inválido',
+            'value.not_in'   => 'O atributo value precisa ser maior que 0',
+            'payer.required' => 'O atributo payer é obrigatório',
+            'payer.integer'  => 'O atributo payer é inválido',
+            'payer.exists'   => 'O atributo payer não existe',
+            'payee.required' => 'O atributo payee é obrigatório',
+            'payee.integer'  => 'O atributo payee é inválido',
+            'payee.exists'   => 'O atributo payee não existe',
+        ]);
+
+        if ($validator->fails()) {
+            throw new InvalidArgumentException($validator->errors()->first());
+        }
+    }
+
+    /**
+     * Verifica se existe saldo suficiente em conta
+     * @param int $payer
+     * @param $value
+     * @throws Exception
+     */
+    public function checkAccountBalance(int $payer, $value)
+    {
+        $wallet = $this->walletRepository->getWalletByUserId($payer);
+
+        if(!$wallet){
+            throw new Exception("Conta do pagador não encontrada.");
+        }
+
+        if($wallet->amount < $value){
+            throw new Exception("O saldo da conta é insuficiente.");
+        }
+    }
+
+    /**
+     * Salvar transação
+     * @param array $array
+     * @throws Exception
+     */
+    public function transaction(array $array)
+    {
+        if(!$this->transactionRepository->save($array)){
+            throw new Exception("Erro ao salvar a transação");
+        }
+    }
+
+    /**
+     * Debitar valor da carteira do pagador
+     * @param int $payer
+     * @param $value
+     * @throws Exception
+     */
+    public function debit(int $payer, $value)
+    {
+        if(!$this->walletRepository->debit($payer, $value)){
+            throw new Exception("Erro ao debitar valor.");
+        }
+    }
+
+    /**
+     * Creditar valor na conta do beneficiario
+     * @param int $payer
+     * @param $value
+     * @throws Exception
+     */
+    public function credit(int $payer, $value)
+    {
+        if(!$this->walletRepository->credit($payer, $value)){
+            throw new Exception("Erro ao creditar valor.");
+        }
+    }
+
+    /**
+     * Autorizar transação
+     * @throws Exception
+     */
+    public function authorization()
+    {
+        $authorization = new AuthorizationStrategy(new MockyAuthorization);
+        $authorize = $authorization->execute();
+
+        if(!$authorize){
+            throw new Exception("Serviço não autorizado.");
+        }
+    }
 }

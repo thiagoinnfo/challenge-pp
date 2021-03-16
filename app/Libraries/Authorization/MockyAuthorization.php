@@ -12,12 +12,14 @@ use Exception;
 class MockyAuthorization implements Authorization
 {
 
+    /**
+     * Metodo execute
+     * @return bool|void
+     * @throws Exception
+     */
     public function execute()
     {
         $res = Http::get(config('services.authorizer.url'));
-        $body = $res->body();
-        if($body['message'] != 'Autorizado'){
-            throw new Exception("Serviço não autorizado.");
-        }
+        return $res->body();
     }
 }
