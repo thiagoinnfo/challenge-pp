@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\ReprocessNotificationRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
 use App\Libraries\Authorization\AuthorizationStrategy;
@@ -31,15 +32,21 @@ class TransactionService{
     private $walletRepository;
 
     /**
+     * @var ReprocessNotificationRepository
+     */
+    private $reprocessNotificationRepository;
+
+    /**
      * TransactionService constructor.
      * @param TransactionRepository $transactionRepository
      * @param WalletRepository $walletRepository
      */
     public function __construct(TransactionRepository $transactionRepository,
-        WalletRepository $walletRepository)
+        WalletRepository $walletRepository, ReprocessNotificationRepository $reprocessNotificationRepository)
     {
         $this->transactionRepository = $transactionRepository;
         $this->walletRepository = $walletRepository;
+        $this->reprocessNotificationRepository = $reprocessNotificationRepository;
     }
 
     /**
@@ -56,13 +63,17 @@ class TransactionService{
             $this->validatorTransaction($data);
             $this->checkAccountBalance($data['payer'], $data['value']);
             $this->authorization();
-            $this->transaction($data);
+            $transaction = $this->transaction($data);
             $this->debit($data['payer'], $data['value']);
             $this->credit($data['payee'], $data['value']);
 
-            DB::commit();
+            if(!$this->notification()){
+                $this->reprocessNotification([
+                    'transaction_id' => $transaction->id
+                ]);
+            }
 
-            $this->notification();
+            DB::commit();
 
         }catch(Exception $ex){
             DB::rollBack();
@@ -70,17 +81,25 @@ class TransactionService{
         }
     }
 
+    public function reprocessNotification(array $data)
+    {
+        $this->reprocessNotificationRepository->save($data);
+    }
+
     /**
      * Enviar notificação para o cliente
+     * @return bool
      */
-    public function notification()
+    public function notification():bool
     {
         $notification = new NotificationStrategy(new MockyNotification);
         $notify = $notification->execute();
 
-        if(!$notify || (!isset($notify['message']) || $notify['message'] != 'Autorizado')){
-            //salvar na tabela de reprocessamento
+        if($notify && $notify['message'] != 'Autorizado'){
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -100,10 +119,10 @@ class TransactionService{
             'value.not_in'   => 'O atributo value precisa ser maior que 0',
             'payer.required' => 'O atributo payer é obrigatório',
             'payer.integer'  => 'O atributo payer é inválido',
-            'payer.exists'   => 'O atributo payer não existe',
+            'payer.exists'   => 'O atributo payer informado não existe',
             'payee.required' => 'O atributo payee é obrigatório',
             'payee.integer'  => 'O atributo payee é inválido',
-            'payee.exists'   => 'O atributo payee não existe',
+            'payee.exists'   => 'O atributo payee informado não existe',
         ]);
 
         if ($validator->fails()) {
@@ -126,20 +145,25 @@ class TransactionService{
         }
 
         if($wallet->amount < $value){
-            throw new Exception("O saldo da conta é insuficiente.");
+            throw new Exception("O saldo da conta do pagador é insuficiente.");
         }
     }
 
     /**
      * Salvar transação
      * @param array $array
+     * @return mixed
      * @throws Exception
      */
     public function transaction(array $array)
     {
-        if(!$this->transactionRepository->save($array)){
+        $transaction = $this->transactionRepository->save($array);
+
+        if(!$transaction){
             throw new Exception("Erro ao salvar a transação");
         }
+
+        return $transaction;
     }
 
     /**

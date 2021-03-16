@@ -42,17 +42,21 @@ class TransactionRepository
     }
 
     /**
-     * Save Transaction
+     * Salvar transação
      * @param array $data
      * @return mixed
      */
     public function save(array $data)
     {
         $transaction = new $this->transaction;
+
         $transaction->payer = $data['payer'];
         $transaction->payee = $data['payee'];
         $transaction->value = $data['value'];
-        return $transaction->save();
+
+        $transaction->save();
+
+        return $transaction->refresh();
     }
 
 }

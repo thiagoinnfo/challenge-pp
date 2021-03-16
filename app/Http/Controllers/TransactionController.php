@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TransactionRequest;
-use App\Models\Transaction;
 use App\Services\TransactionService;
-use http\Client\Response;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -32,7 +29,11 @@ class TransactionController extends Controller
      */
     public function transfer(Request $request)
     {
-        $data = $request->all();
+        $data = $request->only([
+            'payer',
+            'payee',
+            'value'
+        ]);
 
         $response = ['status' => 200];
                
