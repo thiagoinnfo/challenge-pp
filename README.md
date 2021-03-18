@@ -1,6 +1,6 @@
 # Desafio PP
 
-API Backend para realização de transferência.
+Transferência PP.
 
 ## Requisitos do sistema
 
@@ -9,52 +9,55 @@ e [ Docker Compose](https://docs.docker.com/compose/).
 
 ## Instalação
 
-Use o docker-compose [docker](https://pip.pypa.io/en/stable/) para iniciar os containers.
+Clone o repositório
+
+```bash
+git clone https://github.com/thiagoinnfo/desafio-pp
+```
+
+Renomear .env.example para .env.
+
+```bash
+cp .env.example .env
+```
+
+Inicie os contaneirs
 
 ```bash
 docker-compose up -d
 ```
-Acesse o container grupozap-php para instalação das dependências do projeto.
+Instalar as dependências usando o composer.
 
 ```bash
-docker exec -it grupozap-php sh
+docker exec -ti pp-app composer install
 ```
 
-Instale as dependências do projeto.
+Execute as migrations
 
 ```bash
-composer install
+docker exec -ti pp-app php artisan migrate
+```
+
+Executar os seeds
+
+```bash
+ docker exec -ti pp-app php artisan db:seed
 ```
 
 ## Como usar
 
-Você pode fazer requisições na api de duas formas.
-
-
 Importar o link da collection no postman.
 
 ```
-https://www.getpostman.com/collections/2f9d84a5693fa8195f22
-```
-
-Acessar a url com os parametros, sendo company igual a zap ou vivareal
-
-```
-http://localhost/api/properties?company=zap&page=1&limit=20
+https://www.getpostman.com/collections/8321f250a8e346012d19
 ```
 
 ## Tests
 
-Acesse o container grupozap-php.
+Executar os tests.
 
 ```bash
-docker exec -it grupozap-php sh
-```
-
-Execute os testes com o comando abaixo.
-
-```bash
-php ./vendor/bin/phpunit tests/ 
+docker exec -ti pp-app ./vendor/bin/phpunit
 ```
 
 ## Autor
