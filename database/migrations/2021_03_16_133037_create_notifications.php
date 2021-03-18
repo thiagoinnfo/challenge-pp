@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReprocessNotification extends Migration
+class CreateNotifications extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateReprocessNotification extends Migration
      */
     public function up()
     {
-        Schema::create('reprocess_notification', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id', true);
             $table->integer('transaction_id')->unsigned();
             $table->integer('status');
             $table->timestamps();
         });
 
-        Schema::table('reprocess_notification', function($table) {
+        Schema::table('notifications', function($table) {
             $table->foreign('transaction_id')->references('id')->on('transactions');
         });
     }

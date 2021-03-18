@@ -4,8 +4,6 @@
 namespace App\Repositories;
 
 use App\Models\Wallet;
-use Exception;
-use UnexpectedValueException;
 
 /**
  * Class WalletRepository
@@ -41,38 +39,19 @@ class WalletRepository
     }
 
     /**
-     * Method debit
-     * @param int $id
-     * @param $value
+     * Update attribute amount on database
+     * @param array $data
+     * @param $id
      * @return mixed
-     * @throws Exception
      */
-    public function debit(int $id, $value)
+    public function update(array $data, $id)
     {
         $wallet = $this->wallet
             ->where('user_id', $id)
             ->first();
 
-        $wallet->amount = $wallet->amount - $value;
+        $wallet->amount = $data['amount'];
 
-        return $wallet->update();
-    }
-
-    /**
-     * Method credit
-     * @param int $id
-     * @param $value
-     * @return mixed
-     * @throws Exception
-     */
-    public function credit(int $id, $value)
-    {
-        $wallet = $this->wallet
-            ->where('user_id', $id)
-            ->first();
-
-        $wallet->amount = $wallet->amount + $value;
-        
         return $wallet->update();
     }
 

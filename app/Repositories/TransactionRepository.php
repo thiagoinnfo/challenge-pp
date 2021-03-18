@@ -18,21 +18,6 @@ class TransactionRepository
     private $transaction;
 
     /**
-     * @var string[]
-     */
-    private $messages = [
-        'value.required' => 'O valor é obrigatório',
-        'value.numeric'  => 'O valor é inválido',
-        'value.not_in'   => 'O valor precisa ser maior que 0',
-        'payer.required' => 'O pagador é obrigatório',
-        'payer.integer'  => 'O pagador é inválido',
-        'payer.exists'   => 'O pagador não existe',
-        'payee.required' => 'O beneficiário é obrigatório',
-        'payee.integer'  => 'O beneficiário é inválido',
-        'payee.exists'   => 'O beneficiário não existe',
-    ];
-
-    /**
      * TransactionRepository constructor.
      * @param Transaction $transaction
      */
