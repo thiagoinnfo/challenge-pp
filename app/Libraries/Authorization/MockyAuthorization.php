@@ -3,7 +3,6 @@
 namespace App\Libraries\Authorization;
 
 use Illuminate\Support\Facades\Http;
-use Exception;
 
 /**
  * Class MockyAuthorization
@@ -11,15 +10,27 @@ use Exception;
  */
 class MockyAuthorization implements Authorization
 {
-
     /**
-     * Metodo execute
-     * @return bool|void
-     * @throws Exception
+     * Method execute
+     * @return array
      */
     public function execute():array
     {
-        $res = Http::get(config('services.authorizer.url'));
-        return json_decode($res->body(), true);
+        $response = [
+            'status' => false,
+            'message' => ''
+        ];
+
+        $request = Http::get(config('services.authorizer.url'));
+        $res = $request->json();
+
+        if($request->ok()){
+           $response = [
+               'status' => true,
+               'message' => $res['message'] ?? ''
+           ];
+        }
+
+        return $response;
     }
 }

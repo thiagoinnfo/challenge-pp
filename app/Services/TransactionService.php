@@ -60,7 +60,7 @@ class TransactionService{
 
         $validator = Validator::make($data, [
             'value' => 'required|numeric|min:0|not_in:0',
-            'payer' => 'required|integer|exists:users,id,status,1',
+            'payer' => 'required|integer|exists:users,id,status,1,user_type_account_id,1',
             'payee' => 'required|integer|exists:users,id,status,1'
         ]);
 
@@ -104,7 +104,7 @@ class TransactionService{
 
             $this->notificationRepository->save([
                 'transaction_id' => $transaction->id,
-                'status' => ($notify ? 1 : 0)
+                'status' => ($notify['message']  == 'Enviado' ? 1 : 0)
             ]);
 
         }catch(Exception $ex){

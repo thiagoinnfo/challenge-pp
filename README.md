@@ -1,6 +1,6 @@
 # Desafio PP
 
-Transferência PP.
+Transferência entre contas.
 
 ## Requisitos do sistema
 

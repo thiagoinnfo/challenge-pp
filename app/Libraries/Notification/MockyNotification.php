@@ -16,7 +16,21 @@ class MockyNotification implements Notification
      */
     public function execute():array
     {
-        $res = Http::get(config('services.notification.url'));
-        return json_decode($res->body(), true);
+        $response = [
+            'status' => false,
+            'message' => ''
+        ];
+
+        $request = Http::get(config('services.notification.url'));
+        $res = $request->json();
+
+        if($request->ok()){
+            $response = [
+                'status' => true,
+                'message' => $res['message'] ?? ''
+            ];
+        }
+
+        return $response;
     }
 }
