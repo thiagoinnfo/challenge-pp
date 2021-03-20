@@ -2,61 +2,63 @@
 
 Transferência entre contas.
 
-## Requisitos do sistema
+## Requeriments
 
-Instale o [ Docker ](https://docs.docker.com/engine/)
-e [ Docker Compose](https://docs.docker.com/compose/).
+Install the [ Docker ](https://docs.docker.com/engine/)
+and [ Docker Compose](https://docs.docker.com/compose/).
 
-## Instalação
+## Installation
 
-Clone o repositório
+Clone the repository
 
 ```bash
 git clone https://github.com/thiagoinnfo/desafio-pp
 ```
 
-Renomear .env.example para .env.
+Rename the file .env.example to .env
 
 ```bash
 cp .env.example .env
 ```
 
-Inicie os contaneirs
+Start the containers
 
 ```bash
 docker-compose up -d
 ```
-Instalar as dependências usando o composer.
+Install the dependencies using composer
 
 ```bash
 docker exec -ti pp-app composer install
 ```
 
-Execute as migrations
+Run the migrations
 
 ```bash
 docker exec -ti pp-app php artisan migrate
 ```
 
-Executar os seeds
+Run the seeds
 
 ```bash
  docker exec -ti pp-app php artisan db:seed
 ```
 
-## Como usar
+## How to use
 
-Solicitação via POST na url /transaction
+Request
 
 ```
+POST
+/transaction
+
 {
-    "value" : "aaa",
+    "value" : 500,
     "payer" : 1,
     "payee" : 2
 }
 ```
-
-Caso preferir, importe o link da collection no postman.
+Collection postman
 
 ```
 https://www.getpostman.com/collections/8321f250a8e346012d19
@@ -64,7 +66,7 @@ https://www.getpostman.com/collections/8321f250a8e346012d19
 
 ## Tests
 
-Executar os tests.
+Run tests
 
 ```bash
 docker exec -ti pp-app ./vendor/bin/phpunit
