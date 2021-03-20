@@ -46,7 +46,17 @@ Executar os seeds
 
 ## Como usar
 
-Importar o link da collection no postman.
+Solicitação via POST na url /transaction
+
+```
+{
+    "value" : "aaa",
+    "payer" : 1,
+    "payee" : 2
+}
+```
+
+Caso preferir, importe o link da collection no postman.
 
 ```
 https://www.getpostman.com/collections/8321f250a8e346012d19
