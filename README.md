@@ -1,6 +1,6 @@
-# Desafio PP
+# Challenge PP
 
-Transferência entre contas.
+Transfers between accounts
 
 ## Requeriments
 
@@ -72,7 +72,7 @@ Run tests
 docker exec -ti pp-app ./vendor/bin/phpunit
 ```
 
-## Autor
+## Author
 Thiago de oliveira
 thiagoinnfo@gmail.com
 
