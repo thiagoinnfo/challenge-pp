@@ -12,7 +12,7 @@ and [ Docker Compose](https://docs.docker.com/compose/).
 Clone the repository
 
 ```bash
-git clone https://github.com/thiagoinnfo/desafio-pp
+git clone https://github.com/thiagoinnfo/challenge-pp
 ```
 
 Rename the file .env.example to .env
