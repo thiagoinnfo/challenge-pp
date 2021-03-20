@@ -37,6 +37,7 @@ class TransactionControllerTest extends TestCase
         $this->json('POST', '/transaction', $data)
             ->seeJsonEquals([
                 'status' => 200,
+                'message' => 'Successful transfer'
             ]);
     }
 }

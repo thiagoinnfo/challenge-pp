@@ -6,16 +6,20 @@ use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Exception;
 
-
+/**
+ * Class TransactionController
+ * @package App\Http\Controllers
+ */
 class TransactionController extends Controller
 {
     /**
-     * Transaction service
+     * @var TransactionService
      */
     private $transactionService;
 
     /**
-     * Método construtor
+     * TransactionController constructor.
+     * @param TransactionService $transactionService
      */
     public function __construct(TransactionService $transactionService)
     {
@@ -29,13 +33,9 @@ class TransactionController extends Controller
      */
     public function transfer(Request $request)
     {
-        $data = $request->only([
-            'payer',
-            'payee',
-            'value'
-        ]);
+        $data = $request->all();
 
-        $response = ['status' => 200];
+        $response = ['status' => 200, 'message' => 'Successful transfer'];
                
         try{
             $this->transactionService->transfer($data);

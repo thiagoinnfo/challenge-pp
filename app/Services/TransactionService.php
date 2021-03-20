@@ -51,7 +51,7 @@ class TransactionService{
     }
 
     /**
-     * Transfere valores entre contas
+     * Transfers amounts between accounts
      * @param array $data
      * @throws Exception
      */
@@ -61,7 +61,7 @@ class TransactionService{
         $validator = Validator::make($data, [
             'value' => 'required|numeric|min:0|not_in:0',
             'payer' => 'required|integer|exists:users,id,status,1,user_type_account_id,1',
-            'payee' => 'required|integer|exists:users,id,status,1'
+            'payee' => 'required|integer||different:payer|exists:users,id,status,1'
         ]);
 
         if ($validator->fails()) {
