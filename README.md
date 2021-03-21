@@ -61,7 +61,7 @@ POST
 Collection postman
 
 ```
-https://www.getpostman.com/collections/8321f250a8e346012d19
+https://www.getpostman.com/collections/9b1b0667afc49f018dcc
 ```
 
 ## Tests
